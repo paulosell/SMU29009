@@ -1,15 +1,16 @@
-import match from "./match.js";
+import match from "./match.js"
+
 
 var config = {
     type: Phaser.AUTO,
     enableDebug: false,
     
-    
+    fps: 30,
     scale: {
         mode: Phaser.Scale.FIT, 
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 1920,
-        height: 1080
+        width: 960,
+        height: 540
     },
     physics: {
     default: 'arcade',
