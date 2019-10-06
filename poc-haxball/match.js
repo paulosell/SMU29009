@@ -124,7 +124,9 @@ export default class match extends Phaser.Scene {
     update()
     {         
         this.check_mov_player_one()
-        this.check_mov_player_two()             
+        this.check_mov_player_two()
+    
+                     
     }
 
 
