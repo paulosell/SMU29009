@@ -1,0 +1,38 @@
+.main-page{
+   text-align: center;
+   font-weight: bold;
+}
+.main-page .actions {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+
+}
+
+.main-page .actions button{
+    margin-top: 50px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 0;
+    background: 	#1E90FF;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+
+}
+
+.main-page .actions button:hover{
+    opacity: 0.7;
+
+}
+
+.main-page .actions button[disabled]{
+    opacity: 0.5;
+    cursor: default;
+}
+
+.main-page .actions button[disabled]:hover{
+    opacity: 0.5;
+    
+}
