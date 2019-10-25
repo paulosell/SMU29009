@@ -1,14 +1,13 @@
 .text-page .chat{
-    
-    margin-top: 50px;
-    
-    margin-left:50px;
-    margin-right:50px;
-    background: #fafafa;
-    width: 1500px;
-    
-    
+    padding: 30px;
+    background-color: aqua;
+    margin: 25px;
+    height: 550px;
+    overflow-y: scroll;
+
+
 }
+
 .text-page .actions{
     bottom: 0px;
     padding: 10px;
