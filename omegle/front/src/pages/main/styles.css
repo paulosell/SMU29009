@@ -1,0 +1,43 @@
+.main-page{
+   text-align: center;
+   font-weight: bold;
+   margin-top: 20px;
+}
+.main-page .actions {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+
+}
+
+.main-page .actions a{
+    text-decoration: none;
+    margin-top: 25px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 0;
+    background: 	#1E90FF;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+
+}
+
+.main-page .actions a:hover{
+    background: #da552f;
+    color: #fff
+
+}
+
+.main-page .actions a[disabled]{
+    opacity: 0.5;
+    cursor: default;
+}
+
+.main-page .actions a[disabled]:hover{
+    opacity: 0.5;
+    background: 	#1E90FF;
+    
+}
