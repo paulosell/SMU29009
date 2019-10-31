@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+
 import './styles.css'
 
 export default class Text extends Component{
@@ -7,29 +8,35 @@ export default class Text extends Component{
     state = {
         inputText: "",
         divText: "",
-    }
-
-    componentDidMount(){
-        this.setState({hasChange: false})
+        easyrtc: window.easyrtc,
     }
     
+    componentDidMount = () => (
+        this.connect()
+        
+    )
+    connect(){
+       
+        this.state.easyrtc.enableDebug(false)
+        this.state.easyrtc.enableDataChannels(true);
+       this.state.easyrtc.enableVideo(false);
+   this.state.easyrtc.enableAudio(false);
+    
+   
+        console.log('aa')
+    }
     handleChange  = (event) =>(
         this.setState({inputText: event.target.value})
-        
-
     )
         
 
     getText = () => (
-        
-       this.setState({divText: this.state.divText + '\n' + this.state.inputText, inputText: "" })
-      
-            
+       this.setState({divText: this.state.divText + '\n' + this.state.inputText, inputText: "" })            
     )
      
     
     render(){
-       return (
+       return ( 
             <div className='text-page'>
                 <div className='chat' >{this.state.divText}
                
