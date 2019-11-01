@@ -6,20 +6,21 @@ var selfEasyrtcid = ""
 var connectList = {}
 const easyrtc = window.easyrtc
 var connectedto = ""
-
+var connected = true
 
 var startCall = function(otherEasyrtcid){
     //const {easyrtc} = this.state
 
+    
     if (easyrtc.getConnectStatus(otherEasyrtcid) === easyrtc.NOT_CONNECTED) {
         try {
         easyrtc.call(otherEasyrtcid,
                 function(caller, media) { // success callback
                     if (media === 'datachannel') {
                         // console.log("made call succesfully");
-                        connectList[otherEasyrtcid] = true;
-                        
+                        connectList[otherEasyrtcid] = true                        
                         connectedto = otherEasyrtcid
+                        connected = true
                     }
                 },
                 function(errorCode, errorText) {
@@ -47,6 +48,55 @@ var addToConversation = function(who, msgType, content){
             "<b>" + who + ":</b>&nbsp;" + content + "<br />";
 }
 
+
+
+var connect = function(){       
+    //const { easyrtc } = this.state
+   easyrtc.enableDebug(false)
+   easyrtc.enableDataChannels(true);
+   easyrtc.enableVideo(false);
+   easyrtc.enableAudio(false);  
+   easyrtc.setDataChannelOpenListener(openListener)
+   easyrtc.setDataChannelCloseListener(closeListener)
+   easyrtc.setRoomOccupantListener(getListeners)
+   easyrtc.setPeerListener(addToConversation);
+   easyrtc.connect("easyrtc.dataMessaging", loginSuccess, loginFailure)
+   
+
+}
+
+var openListener = function(otherParty){
+    channelIsActive[otherParty] = true   
+    connectedto = otherParty
+    connected = true
+    console.log('connect list ', connectList)
+    console.log('canais ativos ', channelIsActive)
+    
+}
+
+var   getListeners = function (roomName, occupantList, isPrimary){
+    connectList = occupantList
+}   
+ 
+
+var closeListener = function(otherParty){
+        
+    channelIsActive[otherParty] = false
+    
+    connectedto = ""
+    connected = false
+}
+
+var loginSuccess = function(easyrtcid){
+    selfEasyrtcid = easyrtcid
+    
+}
+
+var loginFailure = function(errorCode, message){
+    //const {easyrtc} = this.state
+    easyrtc.showError(errorCode, "failure to login");
+}
+
 export default class Text extends Component{
     
     
@@ -54,85 +104,37 @@ export default class Text extends Component{
     state = {
         inputText: "",
         divText: "",
+        connected: false
         //easyrtc: window.easyrtc,       
     }
 
 
     componentDidMount(){
-        this.connect()
-        
-       
-
+        connect()
     }
         
-    
-    connect(){       
-         //const { easyrtc } = this.state
-        easyrtc.enableDebug(false)
-        easyrtc.enableDataChannels(true);
-        easyrtc.enableVideo(false);
-        easyrtc.enableAudio(false);  
-        easyrtc.setDataChannelOpenListener(this.openListener)
-        easyrtc.setDataChannelCloseListener(this.closeListener)
-        easyrtc.setRoomOccupantListener(this.getListeners)
-        easyrtc.setPeerListener(addToConversation);
-        easyrtc.connect("easyrtc.dataMessaging", this.loginSuccess, this.loginFailure)
 
+    changePeer(){
         
-
-    }
-
-  
-    getListeners(roomName, occupantList, isPrimary){
-        connectList = occupantList
-        console.log(connectList)
-
-    }
-
-    openListener(otherParty){
-        channelIsActive[otherParty] = true
-        console.log('connectd to' + otherParty)
-        connectedto = otherParty
-        
-    }
-
-    trocar(){
-        
-        var keys = Object.keys(connectList)
-        
-        let otherEasyrtcid = connectList[keys[0]]
-              
-        
-        console.log(connectList)
-        startCall(connectList[keys[0]].easyrtcid)
-        console.log(connectedto)
-        
-    }
-
-    closeListener(otherParty){
-        
-        channelIsActive[otherParty] = false
-        console.log('disconnectd to' + otherParty)
+        channelIsActive[connectedto] = false    
         connectedto = ""
-    }
+        connected = false
+        console.log('canais ativos ', channelIsActive)
 
-    loginSuccess (easyrtcid){
-        selfEasyrtcid = easyrtcid
-        console.log(selfEasyrtcid)
-    }
-
-    loginFailure(errorCode, message){
-        //const {easyrtc} = this.state
-        easyrtc.showError(errorCode, "failure to login");
-    }
+        var keys = Object.keys(connectList) 
+        console.log(keys)
+        var peer = connectList[keys[0]].easyrtcid
+        startCall(peer)
+        console.log(connected)
+        
     
-    handleChange  = (event) =>(
-        this.setState({inputText: event.target.value})
-    )
+        
+    }
+
+    
         
     sendText(){
-        console.log(connectedto)
-        console.log(easyrtc.getConnectStatus(connectedto))
+
         let txt = document.getElementById('box').value
         if (easyrtc.getConnectStatus(connectedto) === easyrtc.IS_CONNECTED) {
             easyrtc.sendDataP2P(connectedto, 'msg', txt);
@@ -147,14 +149,13 @@ export default class Text extends Component{
     render(){
        return ( 
             <div className='text-page'>
-                <div className='chat' id='chat' >{this.state.divText}
-               
+                <div className='chat' id='chat' > Procurando peer para comunicação               
                 </div>
                 <div className='actions'>
-                    <button onClick={this.trocar}>Trocar</button>
+                    <button onClick={this.changePeer}>Trocar</button>
                     &nbsp;
                     &nbsp; 
-                    <input type='text' id='box' value={this.state.inputText} onChange={this.handleChange}/>
+                    <input type='text' id='box' onChange={this.handleChange}/>
                     &nbsp;
                     &nbsp; 
                     <button onClick = {this.sendText}>Enviar</button>                     
