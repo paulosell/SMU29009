@@ -1,6 +1,6 @@
 .text-page .chat{
     padding: 30px;
-    background-color: aqua;
+    background-color: rgb(185, 188, 190), 114, 119);
     margin: 25px;
     height: 550px;
     overflow-y: scroll;

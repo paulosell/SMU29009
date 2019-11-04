@@ -115,19 +115,13 @@ export default class Text extends Component{
         
 
     changePeer(){
-        
-        channelIsActive[connectedto] = false    
-        connectedto = ""
-        connected = false
-        console.log('canais ativos ', channelIsActive)
 
+        console.log('canais ativos ', channelIsActive)
         var keys = Object.keys(connectList) 
         console.log(keys)
         var peer = connectList[keys[0]].easyrtcid
         startCall(peer)
         console.log(connected)
-        
-    
         
     }
 
