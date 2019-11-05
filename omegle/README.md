@@ -71,7 +71,7 @@ Esta é a primeira mensagem recebida pelo servidor de sinalização, similar a u
 
 Este tipo de mensagem é utilizado para enviar e receber comandos do servidor de sinalização do easyrtc. Estes comandos podem ser entrar em uma sala criada, criar uma sala, solicitar e receber configuração de servidores ICE, etc. Logo após a autenticação, o servidor do easyrtc realiza uma série de troca de mensagens do tipo **easyrtcCmd**, sendo elas: roomJoin, token (este sendo resposta da primeira mensagem, autenticação), getIceConfig e setRoomApiField. Os parâmetros de cada requisição e suas respectivas respostas podem ser obtidas em na [documentação oficial](https://github.com/priologic/easyrtc/blob/master/docs/easyrtc_server_msgtypes.md) do easyrtc.
 
-
+----------
 
 
 
