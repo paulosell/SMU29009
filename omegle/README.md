@@ -113,4 +113,12 @@ Sentido servidor -> cliente
 
 ### Considerações
 
-O servidor de sinalização do easyrtc será utilizado para que os usuários se "registrem" em uma sala. A partir dos usuários conectados na sala, serão abertos *data channels* individuais, onde cada usuário se conectará com outro de cada vez, podendo então acontecer a troca de mensagem entre os dois pares através do *data channel*.
+O servidor de sinalização do easyrtc será utilizado para que os usuários se "registrem" em uma sala. A partir dos usuários conectados na sala, serão abertos *data channels* individuais, onde cada usuário se conectará com outro de cada vez, podendo então acontecer a troca de mensagem entre os dois pares através do *data channel* sobre webRTC. A figura abaixo, retirada da documentação do easyrtc, ilustra a separação e comunicação da aplicação com o servidor de sinalização (através de websockets) e com outra aplicação (através de sobre webRTC).
+
+![webrtc](images/easyrtc.png)
+
+#### Resumo básico
+
+Comunicação entre cliente e servidor: registro no servidor, acesso à salas, configuração STUN/TURN/ICE, solicitação de abertura de *data channels*.
+
+Comunicação entre os pares: via *data channels* (webRTC). Troca de mensagens simples via texto (chat).
