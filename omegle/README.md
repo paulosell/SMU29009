@@ -119,6 +119,6 @@ O servidor de sinalização do easyrtc será utilizado para que os usuários se 
 
 #### Resumo básico
 
-Comunicação entre cliente e servidor: registro no servidor, acesso à salas, configuração STUN/TURN/ICE, solicitação de abertura de *data channels*.
+**Comunicação entre cliente e servidor:** registro no servidor, acesso à salas, configuração STUN/TURN/ICE, solicitação de abertura de *data channels*.
 
-Comunicação entre os pares: via *data channels* (webRTC). Troca de mensagens simples via texto (chat).
+**Comunicação entre os pares:** via *data channels* (webRTC). Troca de mensagens simples via texto (chat).
