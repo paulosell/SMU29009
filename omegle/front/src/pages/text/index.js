@@ -18,8 +18,8 @@ var appMessages = {
 
     answers : {
         ack          : 'ack',
-        notConnected : 'notConnected',
-        connected    : 'connected',
+        notConnected : 'peerNotConnected',
+        connected    : 'peerIsConnected',
     }
  
 }
@@ -53,9 +53,7 @@ var startCall = function (otherEasyrtcid) {
             console.log("saw call error ", callerror);
         }
     }
-    else {
-        easyrtc.showError("ALREADY-CONNECTED", "already connected to " + easyrtc.idToName(otherEasyrtcid));
-    }
+  
 }
 
 
@@ -65,38 +63,58 @@ var checkIfPeerIsConnected = function(otherEasyrtcid){
 
 
 var handleMessages = function(who, msgType, content){
-    
+    console.log(content)
 
-        if (content === appMessages.requests.isConnected){
-            if (connected === true) {
-                easyrtc.sendDataP2P(who, 'msg', appMessages.answers.connected)
-            } else {
-                easyrtc.sendDataP2P(who, 'msg', appMessages.answers.notConnected)
-            }
-
+    if (content === appMessages.requests.isConnected){
+        if (connected === true) {
+            easyrtc.sendDataP2P(who, 'msg', appMessages.answers.connected)
+        } else {
+            easyrtc.sendDataP2P(who, 'msg', appMessages.answers.notConnected)
         }
 
-        else if (content === appMessages.answers.notConnected){
-            easyrtc.sendDataP2P(who, 'msg', appMessages.requests.connect)
-        } 
-
-        else if (content === appMessages.requests.connect){
-            easyrtc.sendDataP2P(who, 'msg', appMessages.answers.ack)
-            connected = true
-            connectedPeer = who
-        }
-
-        else if (content === appMessages.answers.ack){
-            connectedPeer = who
-            connected = true
     }
 
-    else if (content[0] === ':') {
-        addToConversation(who, msgType, content.substring(1, content.length))
+    else if (content === appMessages.answers.notConnected){
+        easyrtc.sendDataP2P(who, 'msg', appMessages.requests.connect)
+    } 
+
+    else if (content === appMessages.requests.connect){
+        easyrtc.sendDataP2P(who, 'msg', appMessages.answers.ack)
+        connected = true
+        connectedPeer = who
+        document.getElementById('chat').innerHTML = 'Conectado'
+    }
+
+    else if (content === appMessages.answers.ack && connected == false){
+        connectedPeer = who
+        connected = true
+        document.getElementById('chat').innerHTML = 'Conectado'
+    }
+
+    else if (content === appMessages.requests.disconnect){
+        easyrtc.sendDataP2P(who, 'msg', appMessages.answers.ack)
+        connected = false
+        connectedPeer = ""
+        document.getElementById('chat').innerHTML = 'Procurando peer para comunicação'
+        var keys = Object.keys(connectList)
+        var peer = connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
+        startCall(peer) 
+    }
+
+    else if (content === appMessages.answers.ack && connected == true){
+        connectedPeer = ""
+        connected = false
+        document.getElementById('chat').innerHTML = 'Procurando peer para comunicação'
+        var keys = Object.keys(connectList)
+        var peer =connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
+        startCall(peer) 
+    }
+
+    else if (content.substring(0,3) === ':::') {
+        addToConversation(who, msgType, content.substring(3, content.length))
     }
    
-   
-    
+
 }
 
 
@@ -171,12 +189,19 @@ export default class Text extends Component {
         connect()
     }
 
+     changePeer() {
 
-    changePeer() {
+        if (!connected){
+            var keys = Object.keys(connectList)
+            console.log(keys)
+            var peer = connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
+            startCall(peer)  
+        }
+        else {
+            easyrtc.sendDataP2P(connectedPeer, 'msg', appMessages.requests.disconnect)
+    
 
-        var keys = Object.keys(connectList)
-        var peer = connectList[keys[0]].easyrtcid
-        startCall(peer)
+        }
        
     }
 
@@ -186,7 +211,7 @@ export default class Text extends Component {
 
         let txt = document.getElementById('box').value
         if (easyrtc.getConnectStatus(connectedPeer) === easyrtc.IS_CONNECTED) {
-            easyrtc.sendDataP2P(connectedPeer, 'msg', ':'+txt);
+            easyrtc.sendDataP2P(connectedPeer, 'msg', ':::'+txt);
         }
 
         addToConversation("Me", "msgtype", txt);
