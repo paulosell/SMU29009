@@ -92,9 +92,9 @@ var handleMessages = function(who, msgType, content){
     }
 
     else if (content === appMessages.requests.disconnect){
-        easyrtc.sendDataP2P(who, 'msg', appMessages.answers.ack)
         connected = false
         connectedPeer = ""
+        easyrtc.sendDataP2P(who, 'msg', appMessages.answers.ack)
         document.getElementById('chat').innerHTML = 'Procurando peer para comunicação'
         var keys = Object.keys(connectList)
         var peer = connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
@@ -116,7 +116,6 @@ var handleMessages = function(who, msgType, content){
    
 
 }
-
 
 
 var addToConversation = function (who, msgType, content) {
@@ -198,14 +197,11 @@ export default class Text extends Component {
             startCall(peer)  
         }
         else {
-            easyrtc.sendDataP2P(connectedPeer, 'msg', appMessages.requests.disconnect)
-    
-
+            console.log('solicitando desconn')
+            easyrtc.sendDataP2P(connectedPeer, 'msg', appMessages.requests.disconnect)  
         }
        
     }
-
-
 
     sendText() {
 
