@@ -222,13 +222,13 @@ export default class Text extends Component {
                 <div className='chat' id='chat' > Procurando peer para comunicação
                 </div>
                 <div className='actions'>
-                    <button onClick={this.changePeer}>Trocar</button>
+                    <button id='change-button' onClick={this.changePeer}>Trocar</button>
                     &nbsp;
                     &nbsp;
                     <input type='text' id='box' onChange={this.handleChange} />
                     &nbsp;
                     &nbsp;
-                    <button onClick={this.sendText}>Enviar</button>
+                    <button id='send-button' onClick={this.sendText}>Enviar</button>
                 </div>
 
             </div>
