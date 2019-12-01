@@ -82,20 +82,23 @@ var handleMessages = function(who, msgType, content){
         easyrtc.sendDataP2P(who, 'msg', appMessages.answers.ack)
         connected = true
         connectedPeer = who
-        document.getElementById('chat').innerHTML = 'Conectado'
+        document.getElementById('chat').innerHTML = '<b>Conectado</b><br/>'
+        document.getElementById('change-button').textContent = 'Trocar'
     }
 
     else if (content === appMessages.answers.ack && connected == false){
         connectedPeer = who
         connected = true
-        document.getElementById('chat').innerHTML = 'Conectado'
+        document.getElementById('chat').innerHTML = '<b>Conectado</b><br/>'
+        document.getElementById('change-button').textContent = 'Trocar'
     }
 
     else if (content === appMessages.requests.disconnect){
         connected = false
         connectedPeer = ""
         easyrtc.sendDataP2P(who, 'msg', appMessages.answers.ack)
-        document.getElementById('chat').innerHTML = 'Procurando peer para comunicação'
+        document.getElementById('chat').innerHTML = '<b>Procurando peer para comunicação</b><br/>'
+        document.getElementById('change-button').textContent = 'Trocar'
         var keys = Object.keys(connectList)
         var peer = connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
         startCall(peer) 
@@ -104,7 +107,8 @@ var handleMessages = function(who, msgType, content){
     else if (content === appMessages.answers.ack && connected == true){
         connectedPeer = ""
         connected = false
-        document.getElementById('chat').innerHTML = 'Procurando peer para comunicação'
+        document.getElementById('chat').innerHTML = '<b>Procurando peer para comunicação</b><br/>'
+        document.getElementById('change-button').textContent = 'Tente de novo'
         var keys = Object.keys(connectList)
         var peer =connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
         startCall(peer) 
@@ -123,7 +127,7 @@ var addToConversation = function (who, msgType, content) {
         content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         content = content.replace(/\n/g, '<br />');
         document.getElementById('chat').innerHTML +=
-            "<b>" + who + ":</b>&nbsp;" + content + "<br />";
+            "<b>" + 'Stranger' + ":</b>&nbsp;" + content + "<br />";
     
 }
 
@@ -210,16 +214,19 @@ export default class Text extends Component {
             easyrtc.sendDataP2P(connectedPeer, 'msg', ':::'+txt);
         }
 
-        addToConversation("Me", "msgtype", txt);
+        txt = txt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        txt = txt.replace(/\n/g, '<br />');
+        document.getElementById('chat').innerHTML +=
+            "<b>" + 'Me' + ":</b>&nbsp;" + txt + "<br />";
         document.getElementById('box').value = "";
-
+      
     }
 
 
     render() {
         return (
             <div className='text-page'>
-                <div className='chat' id='chat' > Procurando peer para comunicação
+                <div className='chat' id='chat' > <b>Procurando peer para comunicação</b><br/>
                 </div>
                 <div className='actions'>
                     <button id='change-button' onClick={this.changePeer}>Trocar</button>
