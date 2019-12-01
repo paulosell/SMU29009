@@ -76,8 +76,13 @@ var handleMessages = function(who, msgType, content){
 
     else if (content === appMessages.answers.notConnected){
         easyrtc.sendDataP2P(who, 'msg', appMessages.requests.connect)
+
     } 
 
+    else if (content === appMessages.answers.connected){
+        document.getElementById('change-button').textContent = 'Tente de novo'
+        
+    } 
     else if (content === appMessages.requests.connect){
         easyrtc.sendDataP2P(who, 'msg', appMessages.answers.ack)
         connected = true
