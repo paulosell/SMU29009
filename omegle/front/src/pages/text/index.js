@@ -106,7 +106,8 @@ var handleMessages = function(who, msgType, content){
         document.getElementById('change-button').textContent = 'Trocar'
         var keys = Object.keys(connectList)
         var peer = connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
-        startCall(peer) 
+        if (peer !== 'undefined')
+        {startCall(peer)  }
     }
 
     else if (content === appMessages.answers.ack && connected == true){
@@ -116,7 +117,8 @@ var handleMessages = function(who, msgType, content){
         document.getElementById('change-button').textContent = 'Tente de novo'
         var keys = Object.keys(connectList)
         var peer =connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
-        startCall(peer) 
+        if (peer !== 'undefined')
+        {startCall(peer)  }
     }
 
     else if (content.substring(0,3) === ':::') {
@@ -203,7 +205,8 @@ export default class Text extends Component {
             var keys = Object.keys(connectList)
             console.log(keys)
             var peer = connectList[keys[ keys.length * Math.random() << 0]].easyrtcid
-            startCall(peer)  
+            if (peer !== 'undefined')
+            {startCall(peer)  }
         }
         else {
             console.log('solicitando desconn')
