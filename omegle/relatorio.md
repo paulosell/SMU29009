@@ -32,7 +32,7 @@ No momento em que um *peer* deseja abrir um *data channel*, o mesmo envia uma of
 do *easyrtc*. O bloco abaixo demonstra uma captura através do *wireshark* da oferta de mídia do protocolo SDP.
 
 ```
-type:offer,
+**type:offer**,
 sdp:
 v=0
 o=- 5992877891373361706 2 IN IP4 127.0.0.1
@@ -51,7 +51,7 @@ a=max-message-size:262144
 ```
 
 ```
-type:answer,
+**type:answer**,
 sdp:
 v=0
 o=- 7325903949036046769 2 IN IP4 127.0.0.1
@@ -73,7 +73,151 @@ a=max-message-size:262144
 Como  é possível observar, o campo *m* indica o tipo de dado que está sendo ofertado, neste caso um *data channel* que será aberto. Na oferta, o campo *a=setup:actpass* indica que o *peer* está aberto para envio ou recebimento de dados. Já na resposta, o campo *a=setup:active* indica que o segundo *peer* está aceitando a oferta iniciará uma conexão.
 
 
-Após a oferta de mídia, uma mensagem do tipo "dataChannelPrimed", própria do *easyrtc*, é trocada entre os pares que estão estabelecendo o canal de comunicação.
+Ocorre também uma troca de menasgens do tipo *candidate*, a qual os *peers* informam um ao outro quais caminhos (ip/porta) eles estão esperando comunicação. O bloco abaixo demonstra as mensagens trocadas.
+
+```
+[
+"easyrtcCmd",
+{   "senderEasyrtcid":"phAr0HHZpDvhSpw8",
+    "msgData":
+    { 
+      "type":"candidate",
+      "label":0,
+      "id":"0",
+      "candidate":"candidate:3772974143 1 udp 2113937151 191.36.10.246 54235 typ host generation 0 ufrag UHTm network-cost 999"
+    },
+    "easyrtcid":"5VShEhAy794WLU7T",
+    "msgType":"candidate",
+    "serverTime":1575996038005
+}
+]
+
+
+[
+"easyrtcCmd",
+{ 
+  "senderEasyrtcid":"phAr0HHZpDvhSpw8",
+  "msgData":
+  {
+    "type":"candidate",
+    "label":0,
+    "id":"0",
+    "candidate":"candidate:2674381286 1 udp 2113939711 2804:1454:1004:530:6c5e:feab:4603:b29d 43188 typ host generation 0 ufrag UHTm network-cost 999"
+    },
+    "easyrtcid":"5VShEhAy794WLU7T",
+    "msgType":"candidate",
+    "serverTime":1575996038006
+}
+]
+
+
+[
+"easyrtcCmd",
+{
+  "senderEasyrtcid":"5VShEhAy794WLU7T",
+  "msgData":
+  { 
+    "type":"candidate",
+    "label":0,
+    "id":"0",
+    "candidate":"candidate:3772974143 1 udp 2113937151 191.36.10.246 43340 typ host generation 0 ufrag scU4 network-cost 999"
+   },
+  "easyrtcid":"phAr0HHZpDvhSpw8",
+  "msgType":"candidate",
+  "serverTime":1575996038009
+}
+]
+
+
+[
+"easyrtcCmd",
+{
+  "senderEasyrtcid":"5VShEhAy794WLU7T",
+  "msgData":
+  {
+    "type":"candidate",
+    "label":0,
+    "id":"0",
+    "candidate":"candidate:2674381286 1 udp 2113939711 2804:1454:1004:530:6c5e:feab:4603:b29d 57553 typ host generation 0 ufrag scU4 network-cost 999"
+   },
+  "easyrtcid":"phAr0HHZpDvhSpw8",
+  "msgType":"candidate",
+  "serverTime":1575996038031
+}
+]
+
+[
+"easyrtcCmd",
+{
+  "senderEasyrtcid":"5VShEhAy794WLU7T",
+  "msgData":
+  {
+    "type":"candidate",
+    "label":1,
+    "id":"1",
+    "candidate":"candidate:3772974143 1 udp 2113937151 191.36.10.246 48403 typ host generation 0 ufrag scU4 network-cost 999"
+   },
+  "easyrtcid":"phAr0HHZpDvhSpw8",
+  "msgType":"candidate",
+  "serverTime":1575996038033
+}
+]
+
+
+[
+"easyrtcCmd",
+{
+  "senderEasyrtcid":"5VShEhAy794WLU7T",
+  "msgData":
+  {
+    "type":"candidate",
+    "label":1,
+    "id":"1",
+    "candidate":"candidate:2674381286 1 udp 2113939711 2804:1454:1004:530:6c5e:feab:4603:b29d 40975 typ host generation 0 ufrag scU4 network-cost 999"
+   },
+   "easyrtcid":"phAr0HHZpDvhSpw8",
+   "msgType":"candidate",
+   "serverTime":1575996038035
+}
+]
+
+[
+"easyrtcCmd",
+{
+  "senderEasyrtcid":"5VShEhAy794WLU7T",
+  "msgData":
+  {
+    "type":"candidate",
+    "label":2,
+    "id":"2",
+    "candidate":"candidate:3772974143 1 udp 2113937151 191.36.10.246 44614 typ host generation 0 ufrag scU4 network-cost 999"
+  },
+  "easyrtcid":"phAr0HHZpDvhSpw8",
+  "msgType":"candidate",
+  "serverTime":1575996038036
+}
+]
+
+[
+"easyrtcCmd",
+{
+  "senderEasyrtcid":"5VShEhAy794WLU7T",
+  "msgData":
+  {
+    "type":"candidate",
+    "label":2,
+    "id":"2",
+    "candidate":"candidate:2674381286 1 udp 2113939711 2804:1454:1004:530:6c5e:feab:4603:b29d 35442 typ host generation 0 ufrag scU4 network-cost 999"
+   },
+   "easyrtcid":"phAr0HHZpDvhSpw8",
+   "msgType":"candidate",
+   "serverTime":1575996038037
+}
+]
+
+```
+
+Por fim, uma mensagem do tipo "dataChannelPrimed", própria do *easyrtc*, é trocada entre os pares que estão estabelecendo o canal de comunicação.
 
 ```
 [
