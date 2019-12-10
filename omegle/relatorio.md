@@ -32,7 +32,7 @@ No momento em que um *peer* deseja abrir um *data channel*, o mesmo envia uma of
 do *easyrtc*. O bloco abaixo demonstra uma captura através do *wireshark* da oferta de mídia do protocolo SDP.
 
 ```
-**type:offer**,
+type:offer,
 sdp:
 v=0
 o=- 5992877891373361706 2 IN IP4 127.0.0.1
@@ -51,7 +51,7 @@ a=max-message-size:262144
 ```
 
 ```
-**type:answer**,
+type:answer,
 sdp:
 v=0
 o=- 7325903949036046769 2 IN IP4 127.0.0.1
@@ -216,6 +216,8 @@ Ocorre também uma troca de menasgens do tipo *candidate*, a qual os *peers* inf
 ]
 
 ```
+
+É possível observar que os campos "*candidate*" são alterados em cada mensagem, indicando o par **ip** (que pode ser ipv4 ou ipv6) e **porta** que está disponível. O campo **senderEasyrtcid** indica o *pee*r que está enviando a mensagem e o campo **easyrtcid** indica o *peer* que está recebendo a informação.
 
 Por fim, uma mensagem do tipo "dataChannelPrimed", própria do *easyrtc*, é trocada entre os pares que estão estabelecendo o canal de comunicação.
 
