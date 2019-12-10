@@ -32,23 +32,45 @@ No momento em que um *peer* deseja abrir um *data channel*, o mesmo envia uma of
 do *easyrtc*. O bloco abaixo demonstra uma captura através do *wireshark* da oferta de mídia do protocolo SDP.
 
 ```
+type:offer,
+sdp:
 v=0
 o=- 5992877891373361706 2 IN IP4 127.0.0.1
 s=-
 t=0 0
 m=application 9 UDP/DTLS/SCTP webrtc-datachannel
 c=IN IP4 0.0.0.0
-b=AS:30
-a=ice-ufrag:mmAs
-a=ice-pwd:lvYKj8q3HXHQug63krfMgCBZ
+a=ice-ufrag:scU4
+a=ice-pwd:ngJgjaG93nDvohh77w0yYz1C
 a=ice-options:trickle
-a=fingerprint:sha-256 B0:29:ED:97:26:33:E9:88:10:42:8C:2D:72:71:51:AE:24:55:20:C4:2F:7B:5F:39:94:AD:D0:68:F8:0A:3F:8E
+a=fingerprint:sha-256 91:FC:2E:7D:27:34:BE:5C:4B:4A:C8:69:9F:E1:C4:E3:3C:D2:61:29:A2:73:D3:B0:B6:EC:FD:5E:78:5E:73:CD
+a=setup:actpass
+a=mid:2
+a=sctp-port:5000
+a=max-message-size:262144
+```
+
+```
+type:answer,
+sdp:
+v=0
+o=- 7325903949036046769 2 IN IP4 127.0.0.1
+s=-
+t=0 0
+m=application 9 UDP/DTLS/SCTP webrtc-datachannel
+c=IN IP4 0.0.0.0
+b=AS:30
+a=ice-ufrag:UHTm
+a=ice-pwd:mYUPn7bohU8HrgrPaAbWFGvW
+a=ice-options:trickle
+a=fingerprint:sha-256 E2:CF:A6:A7:0A:7F:3E:34:0A:4B:78:B4:64:FF:10:25:55:47:25:2E:F9:3E:24:DF:5F:25:1A:65:DC:1E:CB:68
 a=setup:active
 a=mid:2
 a=sctp-port:5000
 a=max-message-size:262144
 ```
-Como  é possível observar, o campo *m* indica o tipo de dado que está sendo ofertado, neste caso um *data channel* que será aberto
+
+Como  é possível observar, o campo *m* indica o tipo de dado que está sendo ofertado, neste caso um *data channel* que será aberto. Na oferta, o campo *a=setup:actpass* indica que o *peer* está aberto para envio ou recebimento de dados. Já na resposta, o campo *a=setup:active* indica que o segundo *peer* está aceitando a oferta iniciará uma conexão.
 
 
 Após a oferta de mídia, uma mensagem do tipo "dataChannelPrimed", própria do *easyrtc*, é trocada entre os pares que estão estabelecendo o canal de comunicação.
